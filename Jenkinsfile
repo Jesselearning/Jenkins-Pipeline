@@ -15,7 +15,7 @@ pipeline {
             }
             post{ 
                     always{
-                        eamiltext attachLog: true, subject: "Test Status: ${currentBuild.result}",
+                        emailtext attachLog: true, subject: "Test Status: ${currentBuild.result}",
                         body: "Test Stage COMPLETE. Status: ${currentBuild.result}",
                         to: "justincuber7@gmail.com"
                     }
