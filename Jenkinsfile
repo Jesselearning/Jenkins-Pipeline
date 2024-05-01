@@ -14,15 +14,10 @@ pipeline {
                 echo 'Integration Test working together.'
             }
             post{ 
-                    success{
-                        mail to: "justincuber7@gmail.com",
-                        subject: "Success: JUnit and Integration test successful.",
-                        body: "Stage is working."
-                    }
-                    failure{
-                        mail to: "justincuber7@gmail.com",
-                        subject: "Unsuccess: JUnit and Integration test failure.",
-                        body: "Stage is not working. Please try to test again."
+                    always{
+                        eamiltext attachLog: true, subject: "Test Status: ${currentBuild.result}",
+                        body: "Test Stage COMPLETE. Status: ${currentBuild.result}",
+                        to: "justincuber7@gmail.com"
                     }
                 }
         }
@@ -38,15 +33,10 @@ pipeline {
                echo 'Performing security scan using SonarQube'
             }
              post{ 
-                    success{
-                        mail to: "justincuber7@gmail.com",
-                        subject: "Success: Security scans successful.",
-                        body: "Scan is secure."
-                    }
-                    failure{
-                        mail to: "justincuber7@gmail.com",
-                        subject: "Unsuccess: Security scans failure.",
-                        body: "Scan is not secure. Please try to protect application."
+                    always{
+                        eamiltext attachLog: true, subject: "Security Scan Status: ${currentBuild.result}",
+                        body: "The security scan stage has completed. Status: ${currentBuild.result}",
+                        to: "justincuber7@gmail.com"
                     }
                 }
         }
@@ -60,6 +50,7 @@ pipeline {
         stage("Integration Tests on Staging") {
             steps {
                 echo 'Run Integration Tests on Staging environment'
+                sleep 10
             }
         }
 
@@ -67,15 +58,7 @@ pipeline {
             steps {
                 echo'Deploy to Production server AWS EC2'
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Deployment to production successful!'
-        }
-        failure {
-            echo 'Deployment failed!'
+            
         }
     }
 }
