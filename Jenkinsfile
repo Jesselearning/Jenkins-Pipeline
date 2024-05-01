@@ -10,8 +10,8 @@ pipeline {
 
         stage("Unit and Integration Tests") {
             steps {
-                echo 'JUnit test for code function.'
-                echo 'Integration Test working together.'
+                echo 'Running unit and integration tests...'
+                echo 'Using pytest...'      
             }
             post{ 
                     always{
@@ -24,7 +24,8 @@ pipeline {
 
         stage("Code Analysis") {
             steps {
-                 echo 'Performing code analysis using SonarQube'
+                echo "Check the quality of the code"
+                echo 'Integrate SonarQube for code analysis'
             }
         }
 
@@ -34,7 +35,7 @@ pipeline {
             }
              post{ 
                     always{
-                        eamiltext attachLog: true, subject: "Security Scan Status: ${currentBuild.result}",
+                        emailext attachLog: true, subject: "Security Scan Status: ${currentBuild.result}", 
                         body: "The security scan stage has completed. Status: ${currentBuild.result}",
                         to: "justincuber7@gmail.com"
                     }
@@ -43,22 +44,23 @@ pipeline {
 
         stage("Deploy to Staging") {
             steps {
-                 echo 'Deploy to staging sever AWS EC2 s3://staging-bucket/'
+                echo "Deploy application to a staging server"
+                echo "AWS using Jenkins."
             }
         }
 
         stage("Integration Tests on Staging") {
             steps {
-                echo 'Run Integration Tests on Staging environment'
+                echo "Run integration tests on the staging environment to ensure the application functions as expected in a production-like environment"
                 sleep 10
             }
         }
 
         stage("Deploy to Production") {
             steps {
-                echo'Deploy to Production server AWS EC2'
-            }
-            
+                echo "Product is complete"
+                echo "AWS server using Jenkins"
+            } 
         }
     }
 }
